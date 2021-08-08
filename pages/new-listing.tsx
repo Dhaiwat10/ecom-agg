@@ -46,7 +46,7 @@ const Index = () => {
     });
 
     const listing = {
-      created_by: 'miral',
+      created_by: 'nazeeh',
       image_file_names,
       ...formData,
     };
@@ -108,7 +108,7 @@ const Index = () => {
             <Typography.Text>Upload Images</Typography.Text>
             <div
               {...getRootProps()}
-              className='cursor-pointer p-6 bottom-2 border-dashed rounded-lg text-center'
+              className='cursor-pointer p-6 border-2 border-dashed rounded-lg text-center'
             >
               <input {...getInputProps()} />
               {isDragActive ? (

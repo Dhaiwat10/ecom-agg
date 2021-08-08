@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '../components/Card';
-import { getListings } from './api/listings';
+import { getListingImages, getListings } from './api/listings';
 
 const Index = ({ listings }) => {
   return (
@@ -18,6 +18,11 @@ export async function getServerSideProps(context) {
   const { listings, error } = await getListings();
   if (error) {
     console.log('error while fetching listing: ', error);
+  }
+
+  for await (let listing of listings) {
+    const images = await getListingImages(listing);
+    listing.image_file_names = images;
   }
   return {
     props: {
