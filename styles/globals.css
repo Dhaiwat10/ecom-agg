@@ -14,3 +14,11 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.sbui-typography-text {
+  width: 100%;
+}
+/* 
+.sbui-btn-container {
+  min-width: 6rem;
+} */

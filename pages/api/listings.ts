@@ -6,34 +6,49 @@ const supabase = createClient(
 );
 
 export const getListings = async () => {
-  const { data, error} = await supabase.from('listings').select('*');
+  const { data, error } = await supabase.from('listings').select('*');
 
-  if(error) {
+  if (error) {
     return {
       success: false,
       error,
-      listings: []
-    }
+      listings: [],
+    };
   }
   return {
     success: true,
     error: null,
-    listings: data
-  }
+    listings: data,
+  };
 };
 
-
 export async function createListing(listing) {
-  const {data, error} = await supabase.from('listings').insert([listing]);
+  const { data, error } = await supabase.from('listings').insert([listing]);
 
-  if(error){
-    console.log('Error while creating listing: ', error)
+  if (error) {
+    console.log('Error while creating listing: ', error);
   }
-  if(data) {
-    console.log('Listing created: ', data)
+  if (data) {
+    console.log('Listing created: ', data);
   }
   return {
     error,
-    data
+    data,
+  };
+}
+
+export async function uploadImage(file, listingId, idx) {
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${idx}.${fileExt}`;
+  const filePath = `${listingId}/${fileName}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from('listing-images')
+    .upload(filePath, file);
+
+  if (uploadError) {
+    console.log('Error while uploading image: ', uploadError);
+    return false;
   }
+  return true;
 }
