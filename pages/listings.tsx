@@ -23,6 +23,7 @@ export async function getServerSideProps(context) {
   for await (let listing of listings) {
     const images = await getListingImages(listing);
     listing.image_file_names = images;
+    console.log(images);
   }
   return {
     props: {

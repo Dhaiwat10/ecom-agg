@@ -21,7 +21,7 @@ export const Card = ({ listing }) => {
           </div>
         }
         cover={[
-          listing.image_file_names && listing.image_file_names?.length === 1 ? (
+          listing.image_file_names && listing.image_file_names?.length >= 1 ? (
             <img
               className={''}
               style={{ height: '300px', objectFit: 'contain' }}
