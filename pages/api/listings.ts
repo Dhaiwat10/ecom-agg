@@ -22,6 +22,22 @@ export const getListings = async () => {
   };
 };
 
+export async function getListingImages(listing) {
+  const fileURLS = [];
+
+  for await (let fileName of listing.image_file_names) {
+    const { publicURL } = supabase.storage
+      .from('listing-images')
+      .getPublicUrl(`${listing.id}/${fileName}`);
+    
+      if (publicURL) {
+      fileURLS.push(publicURL);
+    }
+  }
+
+  return fileURLS;
+}
+
 export async function createListing(listing) {
   const { data, error } = await supabase.from('listings').insert([listing]);
 
@@ -42,7 +58,7 @@ export async function uploadImage(file, listingId, idx) {
   const fileName = `${idx}.${fileExt}`;
   const filePath = `${listingId}/${fileName}`;
 
-  const { error: uploadError } = await supabase.storage
+  const { data, error: uploadError } = await supabase.storage
     .from('listing-images')
     .upload(filePath, file);
 
@@ -50,5 +66,6 @@ export async function uploadImage(file, listingId, idx) {
     console.log('Error while uploading image: ', uploadError);
     return false;
   }
+  console.log('Images uploaded successfully: ', data);
   return true;
 }
