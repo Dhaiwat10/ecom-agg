@@ -25,6 +25,13 @@ export const getListings = async () => {
 
 export async function createListing(listing) {
   const {data, error} = await supabase.from('listings').insert([listing]);
+
+  if(error){
+    console.log('Error while creating listing: ', error)
+  }
+  if(data) {
+    console.log('Listing created: ', data)
+  }
   return {
     error,
     data
