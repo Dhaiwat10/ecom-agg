@@ -21,3 +21,12 @@ export const getListings = async () => {
     listings: data
   }
 };
+
+
+export async function createListing(listing) {
+  const {data, error} = await supabase.from('listings').insert([listing]);
+  return {
+    error,
+    data
+  }
+}
