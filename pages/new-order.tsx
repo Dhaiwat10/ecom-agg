@@ -21,7 +21,7 @@ const NewOrder = ({}) => {
   const [orderState, setOrderState] = useState<string>('pending');
 
   const fetchPricing = useCallback(async () => {
-    const { reqListings, error } = await getListingData(orderData.listing_id);
+    const { data: reqListings, error } = await getListingData(orderData.listing_id);
     if (!error && reqListings[0].price) {
       setListingPrice(reqListings[0].price);
       console.log(reqListings[0].price);
