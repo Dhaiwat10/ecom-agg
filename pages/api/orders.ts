@@ -37,7 +37,7 @@ export async function getListingData(listingID: string) {
   const reqListings = listings.filter((listing) => listing.id === listingID);
 
   return {
-    reqListings,
+    data: reqListings[0],
     error,
   };
 }
