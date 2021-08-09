@@ -14,6 +14,7 @@ export interface IOrder {
   customer_email: string;
   shipping_to_pincode: string;
   qty: number;
+  payable_amount: number;
   payment_done: boolean;
   delivery_done: boolean;
 }

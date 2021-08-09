@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-
+import { getListings } from './listings';
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -25,6 +25,21 @@ export async function getOrders() {
 export async function createOrder(order) {
   const { data, error } = await supabase.from('orders').insert([order]);
   return { error, data };
+}
+
+export async function getListingData(listingID: string) {
+  const { listings, error } = await getListings();
+  if (error) {
+    return {
+      error,
+    };
+  }
+  const reqListings = listings.filter((listing) => listing.id === listingID);
+
+  return {
+    reqListings,
+    error,
+  };
 }
 
 export default async function handler(req, res) {

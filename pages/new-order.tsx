@@ -1,18 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Input, Typography, Checkbox } from '@supabase/ui';
-import { createOrder } from './api/orders';
+import { createOrder, getListingData } from './api/orders';
+import { getListings } from './api/listings';
 import { IOrder } from '../types';
+import { SupabaseContext } from '../components';
 const NewOrder = ({}) => {
   const [orderData, setOrderData] = useState<IOrder>({
     listing_id: '',
     customer_email: '',
     shipping_to_pincode: '',
     qty: undefined,
+    payable_amount: undefined,
     payment_done: false,
     delivery_done: false,
   });
 
+  const [listingPrice, setListingPrice] = useState<number | null>(null);
+
   const [orderState, setOrderState] = useState<string>('pending');
+
+  const fetchPricing = useCallback(async () => {
+    const { reqListings, error } = await getListingData(orderData.listing_id);
+    if (!error && reqListings[0].price) {
+      setListingPrice(reqListings[0].price);
+      console.log(reqListings[0].price);
+    }
+  }, [orderData.listing_id]);
+
+  useEffect(() => {
+    if (orderData.listing_id !== '') {
+      fetchPricing();
+    }
+  }, [orderData.listing_id, fetchPricing]);
 
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -21,6 +40,7 @@ const NewOrder = ({}) => {
       customer_email: orderData.customer_email,
       shipping_to_pincode: orderData.shipping_to_pincode,
       qty: orderData.qty,
+      payable_amount: orderData.qty * listingPrice,
       payment_done: orderData.payment_done,
       delivery_done: orderData.delivery_done,
     };
@@ -35,39 +55,45 @@ const NewOrder = ({}) => {
       <Typography.Text>New Order</Typography.Text>
       <form>
         <Input
-          label='Listing ID'
-          type='text'
+          label="Listing ID"
+          type="text"
           value={orderData.listing_id}
           onChange={(e) =>
             setOrderData({ ...orderData, listing_id: e.target.value })
           }
         />
         <Input
-          label='Email'
-          type='email'
+          label="Email"
+          type="email"
           value={orderData.customer_email}
           onChange={(e) =>
             setOrderData({ ...orderData, customer_email: e.target.value })
           }
         />
         <Input
-          label='Pincode'
-          type='number'
+          label="Pincode"
+          type="number"
           value={orderData.shipping_to_pincode}
           onChange={(e) =>
             setOrderData({ ...orderData, shipping_to_pincode: e.target.value })
           }
         />
         <Input
-          label='Quantity'
-          type='Number'
+          label="Quantity"
+          type="Number"
           value={orderData.qty}
           onChange={(e) =>
             setOrderData({ ...orderData, qty: Number(e.target.value) })
           }
         />
+        <Input
+          disabled={true}
+          label="Payabel Amount"
+          type="number"
+          value={listingPrice * orderData.qty}
+        />
         <Checkbox
-          label='Payment'
+          label="Payment"
           onChange={(e) =>
             setOrderData({
               ...orderData,
@@ -76,7 +102,7 @@ const NewOrder = ({}) => {
           }
         />
         <Checkbox
-          label='Deliviery'
+          label="Deliviery"
           onChange={(e) =>
             setOrderData({
               ...orderData,
@@ -85,7 +111,7 @@ const NewOrder = ({}) => {
           }
         />
 
-        <Button size='large' onClick={onSubmit}>
+        <Button size="large" onClick={onSubmit}>
           Create
         </Button>
       </form>
