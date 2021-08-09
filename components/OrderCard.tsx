@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Button, Typography } from '@supabase/ui';
+import Image from 'next/image';
 
 type Props = {
   id: string;
@@ -22,19 +23,30 @@ export const OrderCard = ({
   paymentDone,
   deliveryDone,
   sku,
+  image,
   title,
 }: Props) => {
   return (
     <div>
-      <Card title={id}>
-        <div className="flex">
+      <Card
+        className="h-full"
+        cover={
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="h-96 object-contain"
+            src={image ? image : '/image.png'}
+            alt={'product'}
+          />
+        }
+      >
+        <div className="flex justify-between items-center">
           <div>
             <p>Title: {title}</p>
             <p>SKU: {sku}</p>
             <p>Email: {customerEmail}</p>
           </div>
           <div>
-            <p>Rs {payableAmount}</p>
+            <p>Payable amount: Rs {payableAmount}</p>
             <p>Payment: {paymentDone}</p>
             <p>Delivery: {deliveryDone}</p>
           </div>
