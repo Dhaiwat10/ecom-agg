@@ -11,16 +11,6 @@ export const Card = ({ listing }: { listing: IListing }) => {
   return (
     <div>
       <SupasbaseCard
-        // @ts-ignore
-        title={
-          <div className='flex w-full justify-between items-center'>
-            <Typography.Text type='secondary'>
-              Created by&nbsp;
-              <Typography.Text>{listing.created_by}</Typography.Text>
-            </Typography.Text>
-            <div className='w-16'>Price: {listing.price}</div>
-          </div>
-        }
         cover={[
           listing.images && listing.images?.length >= 1 ? (
             <img
@@ -28,15 +18,21 @@ export const Card = ({ listing }: { listing: IListing }) => {
               style={{ height: '300px', objectFit: 'contain' }}
               src={listing.images[0]}
               key={listing.images[0]}
-              alt='Cover'
+              alt="Cover"
             />
           ) : null,
         ]}
       >
-        <SupasbaseCard.Meta
-          description={listing.description}
-          title={listing.title}
-        />
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col h-3 gap-2 justify-around items-start">
+            <h2 className="font-bold">{listing.title}</h2>
+            <h2>{listing.sku}</h2>
+          </div>
+          <div className="flex flex-col h-3 gap-2 justify-around items-start">
+            <h2>Rs {listing.price}</h2>
+            <h2>10 Sales</h2>
+          </div>
+        </div>
       </SupasbaseCard>
     </div>
   );
