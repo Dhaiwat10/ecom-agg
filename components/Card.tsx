@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import { Card as SupasbaseCard, Typography } from '@supabase/ui';
+import { IListing } from '../types';
 
-export const Card = ({ listing }) => {
+export const Card = ({ listing }: { listing: IListing }) => {
   const [statusLoading, setStatusLoading] = useState<
     'IDLE' | 'LOADING' | 'ERROR'
   >('IDLE');
@@ -21,12 +22,12 @@ export const Card = ({ listing }) => {
           </div>
         }
         cover={[
-          listing.image_file_names && listing.image_file_names?.length === 1 ? (
+          listing.images && listing.images?.length >= 1 ? (
             <img
               className={''}
               style={{ height: '300px', objectFit: 'contain' }}
-              src={listing.image_file_names[0]}
-              key={listing.image_file_names[0]}
+              src={listing.images[0]}
+              key={listing.images[0]}
               alt='Cover'
             />
           ) : null,

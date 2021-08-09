@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input, Typography, Checkbox } from '@supabase/ui';
 import { createOrder } from './api/orders';
-
-interface IOrder {
-  listing_id: string;
-  customer_email: string;
-  shipping_to_pincode: string;
-  qty: number;
-  payment_done: boolean;
-  delivery_done: boolean;
-}
+import { IOrder } from '../types';
 const NewOrder = ({}) => {
   const [orderData, setOrderData] = useState<IOrder>({
     listing_id: '',
@@ -43,39 +35,39 @@ const NewOrder = ({}) => {
       <Typography.Text>New Order</Typography.Text>
       <form>
         <Input
-          label="Listing ID"
-          type="text"
+          label='Listing ID'
+          type='text'
           value={orderData.listing_id}
           onChange={(e) =>
             setOrderData({ ...orderData, listing_id: e.target.value })
           }
         />
         <Input
-          label="Email"
-          type="email"
+          label='Email'
+          type='email'
           value={orderData.customer_email}
           onChange={(e) =>
             setOrderData({ ...orderData, customer_email: e.target.value })
           }
         />
         <Input
-          label="Pincode"
-          type="number"
+          label='Pincode'
+          type='number'
           value={orderData.shipping_to_pincode}
           onChange={(e) =>
             setOrderData({ ...orderData, shipping_to_pincode: e.target.value })
           }
         />
         <Input
-          label="Quantity"
-          type="Number"
+          label='Quantity'
+          type='Number'
           value={orderData.qty}
           onChange={(e) =>
             setOrderData({ ...orderData, qty: Number(e.target.value) })
           }
         />
         <Checkbox
-          label="Payment"
+          label='Payment'
           onChange={(e) =>
             setOrderData({
               ...orderData,
@@ -84,7 +76,7 @@ const NewOrder = ({}) => {
           }
         />
         <Checkbox
-          label="Deliviery"
+          label='Deliviery'
           onChange={(e) =>
             setOrderData({
               ...orderData,
@@ -93,7 +85,7 @@ const NewOrder = ({}) => {
           }
         />
 
-        <Button size="large" onClick={onSubmit}>
+        <Button size='large' onClick={onSubmit}>
           Create
         </Button>
       </form>

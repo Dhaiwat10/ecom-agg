@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useCallback, useState } from 'react';
 import { createListing, uploadImage } from './api/listings';
-import { Alert, Button, Input, Typography } from '@supabase/ui';
+import { Alert, Auth, Button, Input, Typography } from '@supabase/ui';
 import { useDropzone } from 'react-dropzone';
 
 const Index = () => {
@@ -23,6 +23,8 @@ const Index = () => {
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const { user } = Auth.useUser();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ const Index = () => {
     });
 
     const listing = {
-      created_by: 'nazeeh',
+      created_by: user.email,
       image_file_names,
       ...formData,
     };

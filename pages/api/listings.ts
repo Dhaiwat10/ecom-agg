@@ -1,11 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
+import { IListing } from '../../types';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-export const getListings = async () => {
+export const getListings = async (): Promise<{
+  success: boolean;
+  error: any;
+  listings: Array<IListing>;
+}> => {
   const { data, error } = await supabase.from('listings').select('*');
 
   if (error) {
@@ -29,8 +34,8 @@ export async function getListingImages(listing) {
     const { publicURL } = supabase.storage
       .from('listing-images')
       .getPublicUrl(`${listing.id}/${fileName}`);
-    
-      if (publicURL) {
+
+    if (publicURL) {
       fileURLS.push(publicURL);
     }
   }
