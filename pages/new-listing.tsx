@@ -50,6 +50,7 @@ const Index = () => {
     const listing = {
       created_by: user.email,
       image_file_names,
+      created_at: (new Date()).toISOString(),
       ...formData,
     };
 

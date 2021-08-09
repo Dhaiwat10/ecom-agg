@@ -10,6 +10,7 @@ const NewOrder = ({}) => {
     qty: undefined,
     payment_done: false,
     delivery_done: false,
+    created_at: (new Date()).toISOString()
   });
 
   const [orderState, setOrderState] = useState<string>('pending');
@@ -23,6 +24,7 @@ const NewOrder = ({}) => {
       qty: orderData.qty,
       payment_done: orderData.payment_done,
       delivery_done: orderData.delivery_done,
+      created_at: (new Date()).toISOString(),
     };
     setOrderState('pending');
     createOrder(order).then(() => {

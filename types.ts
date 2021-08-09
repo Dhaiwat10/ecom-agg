@@ -5,6 +5,7 @@ export interface IListing {
   description: string;
   price: number;
   sku: string;
+  created_at: string;
   image_file_names?: string[];
   images?: string[];
 }
@@ -16,4 +17,5 @@ export interface IOrder {
   qty: number;
   payment_done: boolean;
   delivery_done: boolean;
+  created_at: string;
 }
