@@ -26,10 +26,10 @@ const routes: Array<Route> = [
     path: '/new-listing',
     label: 'Create Listing',
   },
-  {
-    path: '/new-order',
-    label: 'Create Order',
-  },
+  // {
+  //   path: '/new-order',
+  //   label: 'Create Order',
+  // },
 ];
 
 const TopBar = () => {
