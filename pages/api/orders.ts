@@ -22,8 +22,10 @@ export async function getOrders() {
   };
 }
 
-export async function createOrder(order) {
+export async function createOrder(order, listingSales?) {
   const { data, error } = await supabase.from('orders').insert([order]);
+
+  await supabase.from('listings').update({sales: listingSales + 1}).eq('id', order.listing_id);
   return { error, data };
 }
 
@@ -31,6 +33,7 @@ export async function getListingData(listingID: string) {
   const { listings, error } = await getListings();
   if (error) {
     return {
+      data: null,
       error,
     };
   }
