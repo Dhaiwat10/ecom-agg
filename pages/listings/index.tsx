@@ -1,8 +1,8 @@
 import { Auth } from '@supabase/ui';
 import React from 'react';
-import { Card } from '../components/Card';
-import { IListing } from '../types';
-import { getListingImages, getListings } from './api/listings';
+import { Card } from '../../components/Card';
+import { IListing } from '../../types';
+import { getListingImages, getListings } from '../api/listings';
 
 const Index = ({ listings }: { listings: Array<IListing> }) => {
   const { user } = Auth.useUser();

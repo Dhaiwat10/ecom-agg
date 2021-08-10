@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { getOrders, getListingData } from './api/orders';
-import { OrderCard } from '../components/OrderCard';
-import { getListingImages } from './api/listings';
+import { getOrders, getListingData } from '../api/orders';
+import { OrderCard } from '../../components/OrderCard';
+import { getListingImages } from '../api/listings';
 
 const Index = ({ orders }) => {
   useEffect(() => {
@@ -17,7 +17,7 @@ const Index = ({ orders }) => {
   }, [orders]);
 
   return (
-    <div className="mx-auto grid lg:grid-cols-2 flex-col gap-6">
+    <div className='mx-auto grid lg:grid-cols-2 flex-col gap-6'>
       {orders &&
         orders.map((order, index) => {
           console.log('order from orders.tsx: ', order);
