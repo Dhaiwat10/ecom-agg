@@ -40,6 +40,7 @@ export const BarChart: React.FunctionComponent<Props> = ({
   };
   return (
     <div>
+      <h1 className="font-bold text-3xl py-4">Sales by Product</h1>
       <Bar data={data} options={options} />
     </div>
   );
@@ -78,6 +79,7 @@ export const LineChart: React.FunctionComponent<Props> = ({
   };
   return (
     <div>
+      <h1 className="font-bold text-3xl pt-10">Sales by Date</h1>
       <Line data={data} options={options} />
     </div>
   );
