@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Button, Typography } from '@supabase/ui';
 import Image from 'next/image';
+import { useRouter } from 'next/dist/client/router';
 
 type Props = {
   id: string;
@@ -26,6 +27,10 @@ export const OrderCard = ({
   image,
   title,
 }: Props) => {
+  const router = useRouter()
+  const { pathname } = router;
+  const ordersRoute = pathname === '/orders' ? true : false;
+
   return (
     <div>
       <Card
@@ -33,13 +38,18 @@ export const OrderCard = ({
         cover={
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            className="h-96 object-contain"
+            onClick={() => {
+              if(pathname === '/orders') {
+                router.push('/orders/' + id);
+              }
+            }}
+            className={`h-96 object-contain ${pathname === '/orders' && 'cursor-pointer'}`}
             src={image ? image : '/image.png'}
             alt={'product'}
           />
         }
       >
-        <div className="flex justify-between items-center">
+        {ordersRoute && <div className="flex justify-between items-center">
           <div>
             <p>Title: {title}</p>
             <p>SKU: {sku}</p>
@@ -50,7 +60,7 @@ export const OrderCard = ({
             <p>Payment: {paymentDone}</p>
             <p>Delivery: {deliveryDone}</p>
           </div>
-        </div>
+        </div>}
       </Card>
     </div>
   );

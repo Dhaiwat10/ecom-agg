@@ -1,12 +1,24 @@
+import { useRouter } from 'next/dist/client/router';
 import { Auth, Typography } from '@supabase/ui';
 import Link from 'next/link';
 import React from 'react';
 import { Card } from '../../components/Card';
 import { IListing } from '../../types';
-import { getListingImages, getListings } from '../api/listings';
+import { deleteListing, getListingImages, getListings } from '../api/listings';
 
 const Index = ({ listings }: { listings: Array<IListing> }) => {
   const { user } = Auth.useUser();
+  const router = useRouter();
+
+  const onDelete = async (listingId) => {
+    const { data, error } = await deleteListing(listingId);
+
+    if (!error && data) {
+      // listings = [...listings.filter((listing) => listing.id !== listingId)];
+      alert('Listing deleted successffully');
+      router.reload();
+    }
+  };
 
   return (
     <div>
@@ -19,7 +31,11 @@ const Index = ({ listings }: { listings: Array<IListing> }) => {
         {listings
           // .filter((listing) => listing.created_by === user.email)
           .map((listing) => (
-            <Card listing={listing} key={listing.id} />
+            <Card
+              onDelete={() => onDelete(listing.id)}
+              listing={listing}
+              key={listing.id}
+            />
           ))}
       </div>
     </div>

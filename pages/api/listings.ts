@@ -58,6 +58,17 @@ export async function createListing(listing) {
   };
 }
 
+export async function deleteListing(listingId) {
+  const { data, error } = await supabase
+    .from('listings')
+    .delete()
+    .match({ id: listingId });
+  return {
+    data,
+    error,
+  };
+}
+
 export async function uploadImage(file, listingId, idx) {
   const fileExt = file.name.split('.').pop();
   const fileName = `${idx}.${fileExt}`;

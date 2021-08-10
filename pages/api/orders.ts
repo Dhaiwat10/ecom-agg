@@ -25,7 +25,10 @@ export async function getOrders() {
 export async function createOrder(order, listingSales?) {
   const { data, error } = await supabase.from('orders').insert([order]);
 
-  await supabase.from('listings').update({sales: listingSales + 1}).eq('id', order.listing_id);
+  await supabase
+    .from('listings')
+    .update({ sales: listingSales + 1 })
+    .eq('id', order.listing_id);
   return { error, data };
 }
 
@@ -44,6 +47,19 @@ export async function getListingData(listingID: string) {
     error,
   };
 }
+
+export const updatePaymentStatus = async (orderId) => {
+  const { data, error } = await supabase
+    .from('orders')
+    .update({ payment_done: true })
+    .eq('id', orderId);
+  return { error, data };
+};
+
+export const updateDeliveryStatus = async (orderId) => {
+  const { data, error } = await supabase.from('orders').update({ delivery_done: true }).eq('id', orderId);
+  return { error, data };
+};
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
