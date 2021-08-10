@@ -1,6 +1,7 @@
 import { Button } from '@supabase/ui';
 import { useRouter } from 'next/dist/client/router';
-import React from 'react';
+import React, { useEffect } from 'react';
+import easyinvoice from 'easyinvoice';
 import { OrderCard } from '../../../components';
 import { getListingImages } from '../../api/listings';
 import {
@@ -13,6 +14,52 @@ import {
 const Index = ({ orders }) => {
   const router = useRouter();
   const id = router.query.id;
+
+  let invoiceDetail;
+
+  useEffect(() => {
+    orders
+      .filter((order) => order.id === id)
+      .map((order) => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        invoiceDetail = {
+          //"documentTitle": "RECEIPT", //Defaults to INVOICE
+          //"locale": "de-DE", //Defaults to en-US, used for number formatting (see docs)
+          currency: 'USD', //See documentation 'Locales and Currency' for more info
+          marginTop: 25,
+          marginRight: 25,
+          marginLeft: 25,
+          marginBottom: 25,
+          // "logo": "https://public.easyinvoice.cloud/img/logo_en_original.png", //or base64
+          // // "background": "https://public.easyinvoice.cloud/img/watermark-draft.jpg", //or base64 //img or pdf
+          // "sender": {
+          //     "company": "Sample Corp",
+          //     "address": "Sample Street 123",
+          //     "zip": "1234 AB",
+          //     "city": "Sampletown",
+          //     "country": "Samplecountry"
+          // },
+          client: {
+            company: order.customer_email,
+            zip: order.customer_zip,
+            //"custom1": "custom value 1",
+            //"custom2": "custom value 2",
+            //"custom3": "custom value 3"
+          },
+          invoiceNumber: order.id,
+          invoiceDate: order.created_at,
+          products: [
+            {
+              quantity: order.qty,
+              // "tax": 6,
+              price: order.price,
+              amount: order.payable_amount,
+            },
+          ],
+          // "bottomNotice": "Kindly pay your invoice within 15 days.",
+        };
+      });
+  }, [orders]);
 
   return (
     <div>
@@ -37,6 +84,7 @@ const Index = ({ orders }) => {
               <p className='my-2 mt-5'>Order id: {order.id}</p>
               <p className='my-2'>Title: {order.listingData.title}</p>
               <p className='my-2'>Customer email: {order.customer_email}</p>
+              <p className='my-2'>Quantity: {order.qty}</p>
               <p className='my-2'>Amount: {order.payable_amount}</p>
               <p className='my-2'>Shipping code: {order.shipping_to_pincode}</p>
               <p className='my-2'>Customer email: {order.customer_email}</p>
@@ -49,11 +97,11 @@ const Index = ({ orders }) => {
                 {!order.delivery_done && (
                   <Button
                     onClick={async () => {
-                      const { data } = await updateDeliveryStatus(order.id); 
-                      if(data) {
+                      const { data } = await updateDeliveryStatus(order.id);
+                      if (data) {
                         order.delivery_done = true;
                         alert('Order delivery status updated');
-                        router.reload()
+                        router.reload();
                       }
                     }}
                   >
@@ -69,17 +117,27 @@ const Index = ({ orders }) => {
                 {!order.payment_done && (
                   <Button
                     onClick={async () => {
-                      const { data } = await updatePaymentStatus(order.id); 
-                      if(data) {
+                      const { data } = await updatePaymentStatus(order.id);
+                      if (data) {
                         order.payment_done = true;
                         alert('Order payment status updated');
-                        router.reload()
+                        router.reload();
                       }
                     }}
                   >
                     Mark as Paid
                   </Button>
                 )}
+                <Button
+                  onClick={async () => {
+                    const result = await easyinvoice.createInvoice(
+                      invoiceDetail
+                    );
+                    easyinvoice.download('myInvoice.pdf', result.pdf);
+                  }}
+                >
+                  Generate invoice
+                </Button>
               </div>
             </div>
           </div>
