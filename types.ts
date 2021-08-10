@@ -4,6 +4,7 @@ export interface IListing {
   title: string;
   description: string;
   price: number;
+  sales: number;
   sku: string;
   created_at: string;
   image_file_names?: string[];

@@ -4,6 +4,7 @@ import { createOrder, getListingData } from './api/orders';
 import { getListings } from './api/listings';
 import { IOrder } from '../types';
 import { SupabaseContext } from '../components';
+
 const NewOrder = ({}) => {
   const [orderData, setOrderData] = useState<IOrder>({
     listing_id: '',
@@ -20,11 +21,14 @@ const NewOrder = ({}) => {
 
   const [orderState, setOrderState] = useState<string>('pending');
 
+  const [listingSales, setListingSales] = useState(null)
+
   const fetchPricing = useCallback(async () => {
     const { data: reqListings, error } = await getListingData(orderData.listing_id);
-    if (!error && reqListings[0].price) {
-      setListingPrice(reqListings[0].price);
-      console.log(reqListings[0].price);
+    if (!error && reqListings && reqListings.price) {
+      setListingPrice(reqListings.price);
+      setListingSales(reqListings.sales);
+      console.log(reqListings.price);
     }
   }, [orderData.listing_id]);
 
@@ -47,7 +51,7 @@ const NewOrder = ({}) => {
       created_at: (new Date()).toISOString(),
     };
     setOrderState('pending');
-    createOrder(order).then(() => {
+    createOrder(order, listingSales).then(() => {
       setOrderState('success');
     });
   };
