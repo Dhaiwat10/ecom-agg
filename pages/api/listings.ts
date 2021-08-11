@@ -27,6 +27,32 @@ export const getListings = async (): Promise<{
   };
 };
 
+export const getListing = async (
+  listingId: string
+): Promise<{
+  success: boolean;
+  error: any;
+  listing: IListing;
+}> => {
+  const { data, error } = await supabase
+    .from('listings')
+    .select('*')
+    .eq('id', listingId);
+
+  if (error) {
+    return {
+      success: false,
+      error,
+      listing: null,
+    };
+  }
+  return {
+    success: true,
+    error: null,
+    listing: data[0],
+  };
+};
+
 export async function getListingImages(listing) {
   const fileURLS = [];
 

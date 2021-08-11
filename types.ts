@@ -21,3 +21,9 @@ export interface IOrder {
   delivery_done: boolean;
   created_at: string;
 }
+
+export interface IReview {
+  id: string;
+  content: string;
+  rating: number;
+}
