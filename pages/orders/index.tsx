@@ -16,14 +16,48 @@ const Index = ({ orders }) => {
     );
   }, [orders]);
 
+  const [amazon, setAmazon] = useState<boolean>(true);
+  const [flipkart, setFlipkart] = useState<boolean>(true);
+
+  useEffect(() => {
+    console.log(amazon);
+  }, [amazon]);
+
   return (
     <>
-      <h1 className='text-4xl font-bold mb-6'>Orders</h1>
-      <div className='mx-auto grid lg:grid-cols-2 flex-col gap-6'>
+      <h1 className="text-4xl font-bold mb-6">Orders</h1>
+      <div className="flex gap-6 mb-4">
+        <div className="flex justify-between w-20 items-center">
+          <label>Amazon</label>
+          <input
+            type="checkbox"
+            defaultChecked={true}
+            onChange={() => setAmazon((prevState) => !prevState)}
+          />
+        </div>
+        <div className="flex justify-between w-20 items-center">
+          <label>Flipkart</label>
+          <input
+            type="checkbox"
+            defaultChecked={true}
+            onChange={() => setFlipkart((prevState) => !prevState)}
+          />
+        </div>
+      </div>
+      <div className="mx-auto grid lg:grid-cols-2 flex-col gap-6">
         {orders &&
           orders
             .sort(function (x, y) {
               return x.created_at - y.created_at;
+            })
+            .filter((order) => {
+              if (flipkart && amazon) {
+                return true;
+              } else if (flipkart && !amazon) {
+                return order.platform === 'flipkart';
+              } else if (amazon && !flipkart) {
+                return order.platform === 'amazon';
+              }
             })
             .map((order, index) => {
               console.log('order from orders.tsx: ', order);
