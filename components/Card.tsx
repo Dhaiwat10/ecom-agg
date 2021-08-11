@@ -50,6 +50,10 @@ export const Card = ({
             </div>
             <div className='flex flex-col h-10 gap-2 justify-around items-start'>
               <h2>{listing.a_sales || 0 + listing.f_sales || 0} Sales</h2>
+              <h2>
+                Listed on: {listing.on_amazon && 'Amazon'}{' '}
+                {listing.on_flipkart && 'Flipkart'}
+              </h2>
             </div>
           </div>
           {/* <div className=''>

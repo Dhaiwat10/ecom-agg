@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getOrders, getListingData } from '../api/orders';
 import { OrderCard } from '../../components/OrderCard';
 import { getListingImages } from '../api/listings';
@@ -39,6 +39,7 @@ const Index = ({ orders }) => {
                     sku={order.listingData.sku}
                     payableAmount={order.payable_amount}
                     timestamp={order.created_at}
+                    platform={order.platform}
                   />
                 </div>
               );

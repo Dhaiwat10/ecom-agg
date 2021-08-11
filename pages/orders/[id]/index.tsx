@@ -83,6 +83,7 @@ const Index = ({ orders }) => {
             />
             <div>
               <p className='my-2 mt-5'>Order id: {order.id}</p>
+              <p className='my-2'>Platform: {order.platform}</p>
               <p className='my-2'>Title: {order.listingData.title}</p>
               <p className='my-2'>Customer email: {order.customer_email}</p>
               <p className='my-2'>Quantity: {order.qty}</p>

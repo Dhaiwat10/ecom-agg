@@ -15,6 +15,7 @@ type Props = {
   sku: string;
   title: string;
   timestamp: string;
+  platform?: string;
 };
 export const OrderCard = ({
   id,
@@ -28,6 +29,7 @@ export const OrderCard = ({
   image,
   title,
   timestamp,
+  platform,
 }: Props) => {
   const router = useRouter();
   const { pathname } = router;
@@ -63,6 +65,9 @@ export const OrderCard = ({
             </div>
             <div>
               <p>Payable amount: Rs {payableAmount}</p>
+              <p>
+                Platform: <b>{platform}</b>
+              </p>
               {/* <p>Payment: {paymentDone}</p>
               <p>Delivery: {deliveryDone}</p> */}
             </div>

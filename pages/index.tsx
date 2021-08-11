@@ -10,16 +10,21 @@ function getSales(
   orders: Array<IOrder>,
   startDate: any,
   endDate: any
-): number {
-  return orders
-    .filter((order) => {
-      return (
-        listingId === order.listing_id &&
-        new Date(order.created_at) >= new Date(startDate) &&
-        new Date(order.created_at) <= new Date(endDate)
-      );
-    })
+): { a: number; f: number } {
+  const validOrders = orders.filter((order) => {
+    return (
+      listingId === order.listing_id &&
+      new Date(order.created_at) >= new Date(startDate) &&
+      new Date(order.created_at) <= new Date(endDate)
+    );
+  });
+  const a = validOrders
+    .filter((order) => order.platform === 'amazon')
     .reduce((acc, order) => acc + order.qty, 0);
+  const f = validOrders
+    .filter((order) => order.platform === 'flipkart')
+    .reduce((acc, order) => acc + order.qty, 0);
+  return { a, f };
 }
 
 export default function Home({
@@ -33,9 +38,18 @@ export default function Home({
   const [selectedListing, setSelectedListing] = useState(null);
   const [dates, setDates] = useState({ startDate: null, endDate: null });
 
+  const salesData = getSales(
+    selectedListing,
+    orders,
+    dates.startDate,
+    dates.endDate
+  );
+
   return (
     <div>
-      <h1 className='text-4xl font-bold mb-6'>Get listing sales details</h1>
+      <h1 className='text-4xl font-bold mb-6'>
+        Sales count for individual listings
+      </h1>
       <select
         className='border-2 p-2 rounded'
         value={selectedListing}
@@ -71,15 +85,11 @@ export default function Home({
       {selectedListing && dates.startDate && dates.endDate && (
         <div className='my-4 text-2xl'>
           <p>
-            Total sales in the period:{' '}
-            <b>
-              {getSales(
-                selectedListing,
-                orders,
-                dates.startDate,
-                dates.endDate
-              )}
-            </b>
+            Total sales in the period: <b>{salesData.a + salesData.f}</b>
+            <br />
+            From Amazon: <b>{salesData.a}</b>
+            <br />
+            From Flipkart: <b>{salesData.f}</b>
           </p>
         </div>
       )}

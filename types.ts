@@ -25,6 +25,7 @@ export interface IOrder {
   payment_done: boolean;
   delivery_done: boolean;
   created_at: string;
+  platform?: 'amazon' | 'flipkart';
 }
 
 export interface IReview {

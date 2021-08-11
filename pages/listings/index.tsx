@@ -1,7 +1,7 @@
 import { useRouter } from 'next/dist/client/router';
 import { Auth, Typography } from '@supabase/ui';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '../../components/Card';
 import { IListing } from '../../types';
 import { deleteListing, getListingImages, getListings } from '../api/listings';
@@ -9,6 +9,9 @@ import { deleteListing, getListingImages, getListings } from '../api/listings';
 const Index = ({ listings }: { listings: Array<IListing> }) => {
   const { user } = Auth.useUser();
   const router = useRouter();
+
+  const [amazon, setAmazon] = useState(true);
+  const [flipkart, setFlipkart] = useState(true);
 
   const onDelete = async (listingId) => {
     const { data, error } = await deleteListing(listingId);
@@ -36,9 +39,42 @@ const Index = ({ listings }: { listings: Array<IListing> }) => {
         </Link>
       </div>
 
+      <div className='flex'>
+        <div>
+          <input
+            type='checkbox'
+            checked={amazon}
+            onChange={(e) => {
+              setAmazon((prev) => !prev);
+            }}
+          />
+          <label>Amazon</label>
+        </div>
+
+        <div>
+          <input
+            type='checkbox'
+            checked={flipkart}
+            onChange={(e) => {
+              setFlipkart((prev) => !prev);
+            }}
+          />
+          <label>Flipkart</label>
+        </div>
+      </div>
+
       <div className='mx-auto grid lg:grid-cols-2 flex-col gap-6 mt-6'>
         {listings
           // .filter((listing) => listing.created_by === user.email)
+          .filter((listing) => {
+            if (flipkart && amazon) {
+              return true;
+            } else if (flipkart && !amazon) {
+              return listing.on_flipkart;
+            } else if (amazon && !flipkart) {
+              return listing.on_amazon;
+            }
+          })
           .map((listing) => (
             <Card
               onDelete={() => onDelete(listing.id)}
