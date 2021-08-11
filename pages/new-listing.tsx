@@ -11,8 +11,8 @@ const Index = () => {
     sku: '',
     on_amazon: true,
     on_flipkart: true,
-    a_price: '',
-    f_price: '',
+    a_price: null,
+    f_price: null,
     stock: 1,
   });
   const [files, setFiles] = useState([]);
@@ -34,16 +34,19 @@ const Index = () => {
     e.preventDefault();
     setFormState('LOADING');
 
-    // if (
-    //   files.length === 0 ||
-    //   formData.sku.length === 0 ||
-    //   formData.price.length === 0 ||
-    //   formData.title.length === 0 ||
-    //   formData.description.length === 0
-    // ) {
-    //   setFormState('ERROR');
-    //   return;
-    // }
+    if (
+      files.length === 0 ||
+      !formData.sku ||
+      formData.a_price <= 0 ||
+      formData.f_price <= 0 ||
+      formData.stock <= 0 ||
+      formData.title.length === 0 ||
+      formData.description.length === 0
+    ) {
+      setFormState('ERROR');
+      alert('Invalid entries');
+      return;
+    }
 
     const image_file_names = files.map((file, idx) => {
       const fileExt = file.name.split('.').pop();
@@ -156,6 +159,7 @@ const Index = () => {
 
             <div className='flex gap-6'>
               <Input
+                type='number'
                 disabled={!formData.on_amazon}
                 label='Price on Amazon'
                 value={formData.a_price}
@@ -164,6 +168,7 @@ const Index = () => {
                 }
               />
               <Input
+                type='number'
                 disabled={!formData.on_flipkart}
                 label='Price on Flipkart'
                 value={formData.f_price}
@@ -182,6 +187,7 @@ const Index = () => {
                 }
               />
               <Input
+                type='number'
                 label='Stock'
                 value={formData.stock}
                 onChange={(e) =>

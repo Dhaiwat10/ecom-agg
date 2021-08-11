@@ -6,6 +6,37 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+export const updateStock = async (
+  listingId: string,
+  newStock: number
+): Promise<{
+  success: boolean;
+  error: any;
+}> => {
+  if (newStock < 0) {
+    return {
+      success: false,
+      error: 'Stock cannot be negative',
+    };
+  }
+
+  const { error } = await supabase
+    .from('listings')
+    .update({ stock: newStock })
+    .eq('id', listingId);
+
+  if (error) {
+    return {
+      success: false,
+      error,
+    };
+  }
+  return {
+    success: true,
+    error: null,
+  };
+};
+
 export const getListings = async (): Promise<{
   success: boolean;
   error: any;

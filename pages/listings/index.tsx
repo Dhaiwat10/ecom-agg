@@ -23,11 +23,19 @@ const Index = ({ listings }: { listings: Array<IListing> }) => {
   return (
     <div>
       <h1 className='text-4xl font-bold mb-6'>Listings</h1>
-      <Link href='/csv' passHref>
-        <Typography.Link href='/csv' target='_self'>
-          Export inventory
-        </Typography.Link>
-      </Link>
+      <div className='flex gap-4'>
+        <Link href='/csv' passHref>
+          <Typography.Link href='/csv' target='_self'>
+            Export inventory
+          </Typography.Link>
+        </Link>
+        <Link href='/stock' passHref>
+          <Typography.Link href='/stock' target='_self'>
+            Update stock
+          </Typography.Link>
+        </Link>
+      </div>
+
       <div className='mx-auto grid lg:grid-cols-2 flex-col gap-6 mt-6'>
         {listings
           // .filter((listing) => listing.created_by === user.email)
