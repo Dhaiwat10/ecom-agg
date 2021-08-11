@@ -69,6 +69,7 @@ const Index = ({ orders }) => {
           <div key={order.id}>
             {console.log('order: ', order.delivery_done)}
             <OrderCard
+              timestamp={order.created_at}
               image={order.image}
               id={order.id}
               customerEmail={order.customer_email}
