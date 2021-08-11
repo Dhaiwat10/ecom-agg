@@ -9,6 +9,7 @@ export interface IListing {
   created_at: string;
   image_file_names?: string[];
   images?: string[];
+  stock?: number;
 }
 
 export interface IOrder {

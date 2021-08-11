@@ -14,6 +14,7 @@ type Props = {
   image?: any;
   sku: string;
   title: string;
+  timestamp: string;
 };
 export const OrderCard = ({
   id,
@@ -26,41 +27,47 @@ export const OrderCard = ({
   sku,
   image,
   title,
+  timestamp,
 }: Props) => {
-  const router = useRouter()
+  const router = useRouter();
   const { pathname } = router;
   const ordersRoute = pathname === '/orders' ? true : false;
 
   return (
     <div>
       <Card
-        className="h-full"
+        className='h-full'
         cover={
           // eslint-disable-next-line @next/next/no-img-element
           <img
             onClick={() => {
-              if(pathname === '/orders') {
+              if (pathname === '/orders') {
                 router.push('/orders/' + id);
               }
             }}
-            className={`h-96 object-contain ${pathname === '/orders' && 'cursor-pointer'}`}
+            className={`h-96 object-contain ${
+              pathname === '/orders' && 'cursor-pointer'
+            }`}
             src={image ? image : '/image.png'}
             alt={'product'}
           />
         }
       >
-        {ordersRoute && <div className="flex justify-between items-center">
-          <div>
-            <p>Title: {title}</p>
-            <p>SKU: {sku}</p>
-            <p>Email: {customerEmail}</p>
+        {ordersRoute && (
+          <div className='flex justify-between items-center'>
+            <div>
+              <p>Title: {title}</p>
+              <p>SKU: {sku}</p>
+              <p>Date: {new Date(timestamp).toLocaleDateString()}</p>
+              {/* <p>Email: {customerEmail}</p> */}
+            </div>
+            <div>
+              <p>Payable amount: Rs {payableAmount}</p>
+              {/* <p>Payment: {paymentDone}</p>
+              <p>Delivery: {deliveryDone}</p> */}
+            </div>
           </div>
-          <div>
-            <p>Payable amount: Rs {payableAmount}</p>
-            <p>Payment: {paymentDone}</p>
-            <p>Delivery: {deliveryDone}</p>
-          </div>
-        </div>}
+        )}
       </Card>
     </div>
   );

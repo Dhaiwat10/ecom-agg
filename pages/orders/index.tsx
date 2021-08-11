@@ -17,26 +17,34 @@ const Index = ({ orders }) => {
   }, [orders]);
 
   return (
-    <div className='mx-auto grid lg:grid-cols-2 flex-col gap-6'>
-      {orders &&
-        orders.map((order, index) => {
-          console.log('order from orders.tsx: ', order);
-          return (
-            <div key={index}>
-              <OrderCard
-                image={order.image}
-                id={order.id}
-                customerEmail={order.customer_email}
-                shippingCode={order.shipping_to_pincode}
-                qty={order.qty}
-                title={order.listingData.title}
-                sku={order.listingData.sku}
-                payableAmount={order.payable_amount}
-              />
-            </div>
-          );
-        })}
-    </div>
+    <>
+      <h1 className='text-4xl font-bold mb-6'>Orders</h1>
+      <div className='mx-auto grid lg:grid-cols-2 flex-col gap-6'>
+        {orders &&
+          orders
+            .sort(function (x, y) {
+              return x.created_at - y.created_at;
+            })
+            .map((order, index) => {
+              console.log('order from orders.tsx: ', order);
+              return (
+                <div key={index}>
+                  <OrderCard
+                    image={order.image}
+                    id={order.id}
+                    customerEmail={order.customer_email}
+                    shippingCode={order.shipping_to_pincode}
+                    qty={order.qty}
+                    title={order.listingData.title}
+                    sku={order.listingData.sku}
+                    payableAmount={order.payable_amount}
+                    timestamp={order.created_at}
+                  />
+                </div>
+              );
+            })}
+      </div>
+    </>
   );
 };
 
