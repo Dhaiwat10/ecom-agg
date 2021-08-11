@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button, Card as SupasbaseCard, Typography } from '@supabase/ui';
 import { IListing } from '../types';
 import { deleteListing } from '../pages/api/listings';
+import { useRouter } from 'next/dist/client/router';
 
 export const Card = ({
   listing,
@@ -15,8 +16,19 @@ export const Card = ({
     'IDLE' | 'LOADING' | 'ERROR'
   >('IDLE');
 
+  const router = useRouter();
+
+  const nestedRoute = router.pathname !== '/listings';
+
   return (
-    <div>
+    <div
+      className={!nestedRoute && 'cursor-pointer'}
+      onClick={() => {
+        if (!nestedRoute) {
+          router.push(`/listings/${listing.id}`);
+        }
+      }}
+    >
       <SupasbaseCard
         cover={[
           listing.images && listing.images?.length >= 1 ? (
