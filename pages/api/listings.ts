@@ -69,7 +69,7 @@ export async function getListingImages(listing) {
   return fileURLS;
 }
 
-export async function createListing(listing) {
+export async function createListing(listing: IListing) {
   const { data, error } = await supabase.from('listings').insert([listing]);
 
   if (error) {

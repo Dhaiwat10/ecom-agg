@@ -99,7 +99,7 @@ export const getServerSideProps = async (): Promise<any> => {
   let lineDataSets: number[] = [];
   listings.map((listing) => {
     barLabels.push(listing.title);
-    barDataSets.push(listing.sales);
+    barDataSets.push(listing.a_sales || 0 + listing.f_sales || 0);
   });
   orders.map((order) => {
     lineLabels.push('');

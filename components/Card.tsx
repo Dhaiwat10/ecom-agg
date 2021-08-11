@@ -49,8 +49,7 @@ export const Card = ({
               <h2>{listing.stock} in stock</h2>
             </div>
             <div className='flex flex-col h-10 gap-2 justify-around items-start'>
-              <h2>Rs {listing.price}</h2>
-              <h2>{listing.sales} Sales</h2>
+              <h2>{listing.a_sales || 0 + listing.f_sales || 0} Sales</h2>
             </div>
           </div>
           {/* <div className=''>

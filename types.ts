@@ -1,15 +1,19 @@
 export interface IListing {
-  id: string;
+  id?: string;
   created_by: string;
   title: string;
   description: string;
-  price: number;
-  sales: number;
   sku: string;
   created_at: string;
   image_file_names?: string[];
   images?: string[];
   stock?: number;
+  a_price: number;
+  f_price: number;
+  a_sales?: number;
+  f_sales?: number;
+  on_amazon: boolean;
+  on_flipkart: boolean;
 }
 
 export interface IOrder {

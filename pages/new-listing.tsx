@@ -9,7 +9,11 @@ const Index = () => {
     title: '',
     description: '',
     sku: '',
-    price: '',
+    on_amazon: true,
+    on_flipkart: true,
+    a_price: '',
+    f_price: '',
+    stock: 1,
   });
   const [files, setFiles] = useState([]);
   const [formState, setFormState] = useState('IDLE');
@@ -30,16 +34,16 @@ const Index = () => {
     e.preventDefault();
     setFormState('LOADING');
 
-    if (
-      files.length === 0 ||
-      formData.sku.length === 0 ||
-      formData.price.length === 0 ||
-      formData.title.length === 0 ||
-      formData.description.length === 0
-    ) {
-      setFormState('ERROR');
-      return;
-    }
+    // if (
+    //   files.length === 0 ||
+    //   formData.sku.length === 0 ||
+    //   formData.price.length === 0 ||
+    //   formData.title.length === 0 ||
+    //   formData.description.length === 0
+    // ) {
+    //   setFormState('ERROR');
+    //   return;
+    // }
 
     const image_file_names = files.map((file, idx) => {
       const fileExt = file.name.split('.').pop();
@@ -50,8 +54,12 @@ const Index = () => {
     const listing = {
       created_by: user.email,
       image_file_names,
-      created_at: (new Date()).toISOString(),
+      created_at: new Date().toISOString(),
       ...formData,
+      a_price: parseFloat(formData.a_price),
+      f_price: parseFloat(formData.f_price),
+      a_sales: 0,
+      f_sales: 0,
     };
 
     const { data } = await createListing(listing);
@@ -122,20 +130,65 @@ const Index = () => {
             </div>
             <aside>{thumbs}</aside>
 
-            <Input
-              label='Price'
-              value={formData.price}
-              onChange={(e) =>
-                setFormData({ ...formData, price: e.target.value })
-              }
-            />
-            <Input
-              label='SKU'
-              value={formData.sku}
-              onChange={(e) =>
-                setFormData({ ...formData, sku: e.target.value })
-              }
-            />
+            <div className='flex gap-6'>
+              <div className='flex gap-2'>
+                <input
+                  type='checkbox'
+                  checked={formData.on_amazon}
+                  onChange={(e) => {
+                    setFormData({ ...formData, on_amazon: e.target.checked });
+                  }}
+                />
+                <label>Publish to Amazon?</label>
+              </div>
+
+              <div className='flex gap-2'>
+                <input
+                  type='checkbox'
+                  checked={formData.on_flipkart}
+                  onChange={(e) => {
+                    setFormData({ ...formData, on_flipkart: e.target.checked });
+                  }}
+                />
+                <label>Publish to Flipkart?</label>
+              </div>
+            </div>
+
+            <div className='flex gap-6'>
+              <Input
+                disabled={!formData.on_amazon}
+                label='Price on Amazon'
+                value={formData.a_price}
+                onChange={(e) =>
+                  setFormData({ ...formData, a_price: e.target.value })
+                }
+              />
+              <Input
+                disabled={!formData.on_flipkart}
+                label='Price on Flipkart'
+                value={formData.f_price}
+                onChange={(e) =>
+                  setFormData({ ...formData, f_price: e.target.value })
+                }
+              />
+            </div>
+
+            <div className='flex gap-6'>
+              <Input
+                label='SKU'
+                value={formData.sku}
+                onChange={(e) =>
+                  setFormData({ ...formData, sku: e.target.value })
+                }
+              />
+              <Input
+                label='Stock'
+                value={formData.stock}
+                onChange={(e) =>
+                  setFormData({ ...formData, stock: parseInt(e.target.value) })
+                }
+              />
+            </div>
 
             <Button
               size='large'
