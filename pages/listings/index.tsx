@@ -22,6 +22,7 @@ const Index = ({ listings }: { listings: Array<IListing> }) => {
 
   return (
     <div>
+      <h1 className='text-4xl font-bold mb-6'>Listings</h1>
       <Link href='/csv' passHref>
         <Typography.Link href='/csv' target='_self'>
           Export inventory
