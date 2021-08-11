@@ -1,5 +1,6 @@
 import { Divider } from '@supabase/ui';
 import { Card } from '../../components/Card';
+import { IReview } from '../../types';
 import { getListing } from '../api/listings';
 import { getReviews } from '../api/reviews';
 
@@ -18,11 +19,14 @@ const Index = ({ listing, reviews }) => {
       <p>
         Average rating: <b className='text-xl'>{calcAvg(reviews)}</b>/5
       </p>
-      {reviews.map((review) => (
+      {reviews.map((review: IReview) => (
         <div key={review.id} className='border-2 p-4 rounded'>
           <h1>Rating: {review.rating}/5</h1>
           <p>{review.content}</p>
-          <p style={{ color: '#ccc' }}>by {review.created_by}</p>
+          <div className='flex w-full'>
+            <p style={{ color: '#ccc' }}>by {review.created_by}</p>
+            <p className='ml-auto mr-0 capitalize'>from {review.platform}</p>
+          </div>
         </div>
       ))}
     </div>

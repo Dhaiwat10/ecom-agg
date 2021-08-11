@@ -31,4 +31,6 @@ export interface IReview {
   id: string;
   content: string;
   rating: number;
+  created_by?: string;
+  platform: 'amazon' | 'flipkart';
 }
